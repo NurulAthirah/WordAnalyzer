@@ -1,47 +1,91 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, TextInput, Button} from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, Alert } from 'react-native';
 
-export default class App extends Component { 
-  constructor(){
-  super();
-  this.state = {
-  word: 0,
-  height: 0,
-  bmi: 0
+export default class App extends Component {
+  constructor () {
+    super();
+    this.state = {
+      word: '',
+      consonants: 0,
+      vowel: 0,
+      characters: 0,
+      splits: ''
+    }
   }
 
-  calculateBMI = () => {
-    this.setState({bmi: Number((
-    this.state.weight/Math.pow(this.state.height,2)
-    ) * 10000).toFixed(1)}, 
-    () => {
-    if(this.state.bmi < 18.5){
-    Alert.alert('You are underweight!');
-    } else if(this.state.bmi >= 18.5 && this.state.bmi <= 24.9){
-    Alert.alert('You are having a normal weight. Well done!');
-    } else if(this.state.bmi >= 25 && 
-    this.state.bmi <= 29.9){
-    Alert.alert('You are overweight!');
-    } else if(this.state.bmi >= 30){
-    Alert.alert('You are obese. Please watch your diet!');
+  analyze() {
+    this.state.vowel=0;
+    this.state.consonants=0;
+    const splits=this.state.word.split('');
+    for (let i =0; i< splits.length; i++) {
+      if (splits[i]=='A'||splits[i]=='E'||splits[i]=='I'||splits[i]=='O'||splits[i]=='U'||
+          splits[i]=='a'||splits[i]=='e'||splits[i]=='i'||splits[i]=='o'||splits[i]=='u')
+      {
+        this.state.consonants+=1;
+      }
+      else{
+        this.state.vowel+=1;
+      }
     }
-    });
-    }}
+    this.state.splits=splits.join('');
+    this.setState({ word: ''})
+  };
 
     render() {
       return (
-      <View>
-      <Text>Word Analyzer</Text>
-      <TextInput onChangeText={(word) => 
-      this.setState({word})}
-      placeholder='Word'/>
-     
-      <Button color="#841584" 
-      onPress={this.calculateBMI}
-      title='Analyze'/>
-      <Text>BMI: {this.state.bmi}</Text>
-      </View>
-      );
-      }}
-     
+        <View style={styles.container}>
+
+          <Text>A WORD ANALYZER</Text>
+  
+          <Text>Word: <TextInput onChangeText={(word) =>
+            this.setState({word})}
+            placeholder='type here'/></Text>
+    
+
+          <Button color="#841584"
+            onPress={this.analyzeWord}
+            title='Analyze'/>
+        
+
+          <Text>Word: {this.state.splits}</Text>
+          <Text>No of Consonants: {this.state.consonants}</Text>
+          <Text>No of Vowels: {this.state.vowel}</Text>
+          <Text>No of Characters: {this.state.characters}</Text>
+
+        </View>
+        ); 
+        }
+       }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  header: {
+    marginTop: 60,
+    fontSize: 30, 
+    textAlign: 'center', 
+    margin: 10,
+    },
+    
+    contents: {
+    textAlign: 'center', 
+    color: '#4B0082', 
+    marginBottom: 5,
+    },
+    bottom1: {
+      position: 'absolute',
+      bottom:100,
+      
+      },
+  
+      bottom2: {
+        position: 'absolute',
+        bottom:70,
+      
+        }, 
+});
