@@ -1,91 +1,85 @@
+  
 import { StatusBar } from 'expo-status-bar';
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button} from 'react-native';
 
-export default class App extends Component {
-  constructor () {
+export default class App extends Component { 
+  constructor(){
     super();
     this.state = {
-      word: '',
-      consonants: 0,
-      vowel: 0,
-      characters: 0,
-      splits: ''
-    }
-  }
+       word: ' ',
+       charas: 0,
+       cons: 0,
+       vowel: 0,
+       arr: []
+    }}
 
-  analyze() {
-    this.state.vowel=0;
-    this.state.consonants=0;
-    const splits=this.state.word.split('');
-    for (let i =0; i< splits.length; i++) {
-      if (splits[i]=='A'||splits[i]=='E'||splits[i]=='I'||splits[i]=='O'||splits[i]=='U'||
-          splits[i]=='a'||splits[i]=='e'||splits[i]=='i'||splits[i]=='o'||splits[i]=='u')
-      {
-        this.state.consonants+=1;
-      }
-      else{
-        this.state.vowel+=1;
-      }
-    }
-    this.state.splits=splits.join('');
-    this.setState({ word: ''})
-  };
+    analyzeWord = () => {
 
-    render() {
-      return (
+      this.state.cons=0;
+      this.state.vowel=0;
+      this.state.charas=0;
+
+      const arr=this.state.word.split('');
+
+      for (let i= 0; i<arr.length;i++){
+        this.state.charas++;
+      }
+
+            for (let i= 0; i<arr.length;i++){
+            if (arr[i]=='A'||arr[i]=='E'||arr[i]=='I'||arr[i]=='O'||arr[i]=='U'||
+          arr[i]=='a'||arr[i]=='e'||arr[i]=='i'||arr[i]=='o'||arr[i]=='u')
+          {
+            this.state.vowel++;
+          }
+          else
+          {
+            this.state.cons++;
+          }
+            }
+            this.state.arr=arr.join('');
+            this.setState({ word: ''})
+
+     
+      }
+
+      render() {
+        return (
         <View style={styles.container}>
+        <Text style={styles.header}>Word Analyzer</Text>
+        <TextInput style={styles.contents} onChangeText={(word) => this.setState({word})} placeholder='Input your word here'/>
+       
+        <Button style={styles.contents} color="#841584" onPress={this.analyzeWord}
+        title='Analyze'/>
 
-          <Text>A WORD ANALYZER</Text>
-  
-          <Text>Word: <TextInput onChangeText={(word) =>
-            this.setState({word})}
-            placeholder='type here'/></Text>
-    
-
-          <Button color="#841584"
-            onPress={this.analyzeWord}
-            title='Analyze'/>
-        
-
-          <Text>Word: {this.state.splits}</Text>
-          <Text>No of Consonants: {this.state.consonants}</Text>
-          <Text>No of Vowels: {this.state.vowel}</Text>
-          <Text>No of Characters: {this.state.characters}</Text>
-
+          <Text style={styles.container}>Word: {this.state.arr}</Text>
+          <Text style={styles.container}>No of Consonants: {this.state.cons}</Text>
+          <Text style={styles.container}>No of Vowels: {this.state.vowel}</Text>
+          <Text style={styles.container}>No of Characters: {this.state.charas}</Text>
         </View>
-        ); 
+        );
         }
        }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  header: {
-    marginTop: 60,
-    fontSize: 30, 
-    textAlign: 'center', 
-    margin: 10,
-    },
-    
-    contents: {
-    textAlign: 'center', 
-    color: '#4B0082', 
-    marginBottom: 5,
-    },
-    bottom1: {
-      position: 'absolute',
-      bottom:100,
-      
-      },
-  
-      bottom2: {
-        position: 'absolute',
-        bottom:70,
-      
-        }, 
-});
+       const styles = StyleSheet.create({
+
+        container: {
+          flex: 1,
+          justifyContent: 'flex-start', 
+          alignItems: 'center', 
+          backgroundColor: '#F5FCFF',
+          }, 
+          
+          header: {
+          marginTop: 60,
+          fontSize: 30, 
+          textAlign: 'center', 
+          margin: 10,
+          },
+          
+          contents: {
+          textAlign: 'center', 
+          color: '#333333', 
+          marginBottom: 5,
+          } 
+       })
